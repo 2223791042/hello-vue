@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
@@ -40,20 +41,18 @@ export default {
       });
     },
     onSubmit() {
+      let params = {
+        scheduleName: this.form.scheduleName,
+        scheduleAddr: this.form.scheduleAddr,
+        scheduleTime: this.form.scheduleTime
+      };
+      params = qs.stringify(params);
       this.$axios
-        .post(
-          "http://domla.xyz:8080/member/schedule",
-          {
-            scheduleName: this.form.scheduleName,
-            scheduleAddr: this.form.scheduleAddr,
-            scheduleTime: this.form.scheduleTime
-          },
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
+        .post("http://domla.xyz:8080/member/schedule", params, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
           }
-        )
+        })
         .then(response => {
           if (response.data.code == 200) {
             this.$message({
